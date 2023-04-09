@@ -1,16 +1,19 @@
 import { useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { AsciiRenderer, Stars, Sphere, useTexture } from '@react-three/drei'
+import { AsciiRenderer, Stars, Sphere, useTexture, Effects, TrackballControls, CameraControls, OrbitControls } from '@react-three/drei'
 import { Vector3 } from 'three'
 
+
 let cameraView = 0;
+let drag = false;
 function CameraZoom(props) {
   const views = [new Vector3(5,2,0), new Vector3(0,7,0), new Vector3(0,300,0)]
   useFrame(state => {
-    state.camera.lookAt(0, 0, 0)
-    //state.camera.position.lerp(props.view, 0.04)
-    state.camera.position.lerp(views[cameraView % views.length], 0.04)
-    state.camera.updateProjectionMatrix()
+    if (!drag) {
+      state.camera.lookAt(0, 0, 0)
+      state.camera.position.lerp(views[cameraView % views.length], 0.04)
+      state.camera.updateProjectionMatrix()
+    }
   })
   return null
 }
@@ -73,13 +76,15 @@ function App() {
           <RedirectButton href="https://github.com/mhafezer">github</RedirectButton>
         </div>
       </div>
-      <Canvas onClick={() => cameraView = cameraView + 1} camera={{position: [100, 0, 0]}} className='inset-0'>
+      <Canvas camera={{position: [100, 0, 0]}} onMouseDown={() => drag=true} onMouseUp={() => drag=false} onTouchStart={() => drag=true} onTouchEnd={() => drag=false} className='inset-0'>
         <color attach="background" args={['black']} />
         <CameraZoom view={cameraView}/>
+        <OrbitControls enableDamping/>
         <Stars radius={10} depth={100} count={2000} factor={10} saturation={0} fade speed={2} />
         <Earth/>
         <Moon/>
-        <AsciiRenderer invert characters={` .,:-+*=%@#`} fgColor='MistyRose'/>
+        <AsciiRenderer invert characters={` .,:-+*=%@#`} fgColor='MistyRose' renderIndex={0}/>
+        
       </Canvas>
     </div>
   )
