@@ -79,7 +79,7 @@ function App() {
       <Canvas camera={{position: [100, 0, 0]}} onMouseDown={() => drag=true} onMouseUp={() => drag=false} onTouchStart={() => drag=true} onTouchEnd={() => drag=false} className='inset-0'>
         <color attach="background" args={['black']} />
         <CameraZoom view={cameraView}/>
-        <OrbitControls enableDamping/>
+        <OrbitControls enableDamping enablePan={false}/>
         <Stars radius={10} depth={100} count={2000} factor={10} saturation={0} fade speed={2} />
         <Earth/>
         <Moon/>
