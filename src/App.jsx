@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { Suspense, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { AsciiRenderer, Stars, Sphere, useTexture, Effects, TrackballControls, CameraControls, OrbitControls } from '@react-three/drei'
 import { Vector3 } from 'three'
@@ -76,16 +76,17 @@ function App() {
           <RedirectButton href="https://github.com/mhafezer">github</RedirectButton>
         </div>
       </div>
-      <Canvas camera={{position: [100, 0, 0]}} onMouseDown={() => drag=true} onMouseUp={() => drag=false} onTouchStart={() => drag=true} onTouchEnd={() => drag=false} className='inset-0'>
-        <color attach="background" args={['black']} />
-        <CameraZoom view={cameraView}/>
-        <OrbitControls enableDamping enablePan={false}/>
-        <Stars radius={10} depth={100} count={2000} factor={10} saturation={0} fade speed={2} />
-        <Earth/>
-        <Moon/>
-        <AsciiRenderer invert characters={` .,:-+*=%@#`} fgColor='MistyRose' renderIndex={0}/>
-        
-      </Canvas>
+      <Suspense>
+        <Canvas camera={{position: [100, 0, 0]}} onMouseDown={() => drag=true} onMouseUp={() => drag=false} onTouchStart={() => drag=true} onTouchEnd={() => drag=false} className='inset-0'>
+          <color attach="background" args={['black']} />
+          <CameraZoom view={cameraView}/>
+          <OrbitControls enableDamping enablePan={false}/>
+          <Stars radius={10} depth={100} count={2000} factor={10} saturation={0} fade speed={2} />
+          <Earth/>
+          <Moon/>
+          <AsciiRenderer invert characters={` .,:-+*=%@#`} fgColor='MistyRose' renderIndex={0}/>
+        </Canvas>
+      </Suspense>
     </div>
   )
 }
